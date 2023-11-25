@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scroll to Bottom Event</title>
+  <style>
+    body {
+      height: 2000px; /* 用于产生足够的滚动空间，以便测试滚动到底部的效果 */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Your page content goes here -->
+
+  <script>
+    // 监听滚动事件
+    window.onscroll = function() {
+      // 检查是否滚动到页面底部
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        // 触发滚动到底部的事件
+        handleScrollToBottom();
+      }
+    };
+
+    // 处理滚动到底部的事件
+    function handleScrollToBottom() {
+      console.log('Scrolled to the bottom!');
+      // 在这里可以执行你想要触发的事件或操作
+    }
+  </script>
+
+</body>
+</html>

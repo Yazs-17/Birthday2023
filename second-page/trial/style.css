@@ -1,0 +1,62 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #222;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  flex-wrap: wrap ;
+}
+
+.container .card {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(45, 45, 45, 1);
+  overflow: hidden;  
+}
+
+.container .card .text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Your Font Here', sans-serif; /* 请替换为您想要使用的字体 */
+  font-size: 2em; /* 请替换为您想要的字体大小 */
+  color: rgb(42, 154, 79); /* 请替换为您想要的文字颜色 */
+  opacity: 0;
+  transition: opacity 0.5s, top 0, left 0;
+}
+
+.container .card::before {
+  content: '';
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(var(--clr), transparent, transparent);
+  width: 700px;
+  height: 700px;
+  opacity: 0;
+  transition: .5s, top 0, left 0;
+}
+
+.container .card:hover::before {
+  opacity: 1;
+}
+
+.container .card:hover .text {
+  opacity: 1;
+}

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yazs-Birthday</title>
+    <link rel="stylesheet" href="https://static.fontawesome.com/css/fontawesome-app.css">
+    <!-- 引入字体图标 -->
+    <link rel="stylesheet" href="./font/iconfont.css">
+    <!-- 引入字体 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400&display=swap">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+
+        /* 设置html和body元素为flex布局，水平和垂直居中对齐，高度为100vh，背景图大小为cover，溢出隐藏，背景图过渡动画时间为0.7秒 */
+        html,
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-size: cover;
+            overflow: hidden;
+            transition: background-image .7s ease-in-out;
+        }
+
+        /* 设置.shell元素为相对定位，flex布局，水平和垂直居中对齐，宽度和高度为100%，盒模型为border-box，背景颜色为rgba(99, 99, 99, 0.8) */
+        .shell {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            background: rgba(99, 99, 99, 0.8);
+        }
+
+        /* 设置.button元素为flex布局，两端对齐，宽度为380px，绝对定位，左侧偏移量为50%，水平居中，底部偏移量为-80px */
+        .button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 380px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -80px;
+        }
+
+        /* 设置.prev和.next元素过渡动画时间为0.25秒，层级为99999，底部偏移量为5px */
+        .prev,
+        .next {
+            transition: transform 0.25s ease;
+            z-index: 99999;
+            bottom: 5px;
+        }
+
+        /* 设置.prev和.next元素中的i元素字体大小为90px，颜色为#fff，光标为指针，文字阴影为0 0 10px #ffffff */
+        .prev i,
+        .next i {
+            font-size: 90px;
+            color: #fff;
+            cursor: pointer;
+            text-shadow: 0 0 10px #ffffff;
+        }
+
+        /* 设置.shell_body元素宽度为100%，缩放为0.8倍，上内边距为20px，下内边距为150px */
+        .shell_body {
+            width: 100%;
+            transform: scale(.8);
+            padding: 20px 0 150px 0;
+        }
+
+        /* 设置.shell_slider元素为相对定位，过渡动画时间为1秒，背景为透明 */
+        .shell_slider {
+            position: relative;
+            transition: transform 1s ease-in-out;
+            background: transparent;
+        }
+
+        /* 设置.item元素为相对定位，左浮动，左右外边距为20px */
+        .item {
+            position: relative;
+            float: left;
+            margin: 0 20px;
+        }
+
+        /* 设置.frame元素为相对定位，宽度和高度为100%，过渡动画时间为1秒，3D变换模式为保留3D效果 */
+        .frame {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 1s ease-in-out;
+            transform-style: preserve-3d;
+        }
+
+        /* 设置.frame元素的伪元素为绝对定位，底部偏移量为-16%，宽度为100%，高度为60px，背景颜色为#ffffff1c，盒阴影为0px 0px 15px 5px #ffffff1c，3D变换为绕X轴旋转90度并向上平移20px */
+        .frame:after {
+            content: "";
+            position: absolute;
+            bottom: -16%;
+            width: 100%;
+            height: 60px;
+            background: #ffffff1c;
+            box-shadow: 0px 0px 15px 5px #ffffff1c;
+            transform: rotateX(90deg) translate3d(0px, -20px, 0px);
+        }
+
+        /* 设置.box元素为flex布局，纵向排列，水平和垂直居中对齐，绝对定位，宽度和高度为100%，边框为4px实心白色，透视效果为1000px，3D变换模式为保留3D效果 */
+        .box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid #fff;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        /* 设置.box元素中的h1和span元素颜色为#fff，Z轴平移距离为20px */
+        .box h1,
+        .box span {
+            color: #fff;
+            transform: translateZ(20px);
+        }
+
+        /* 设置.box元素中的h1元素文字阴影为0 0 30px #1f05b4，字体大小为100px */
+        .box h1 {
+            text-shadow: 0 0 30px #1f05b4;
+            font-size: 100px;
+        }
+
+        /* 设置.box元素中的span元素为绝对定位，底部偏移量为20px，左右内边距为25px，文字阴影为0 0 10px #1f05b4 */
+        .box span {
+            position: absolute;
+            bottom: 20px;
+            padding: 0 25px;
+            text-shadow: 0 0 10px #1f05b4;
+        }
+
+        /* 设置.front、.left和.right元素的盒阴影为0 0 50px #ffffff，背景图大小为cover */
+        .front,
+        .left,
+        .right {
+            box-shadow: 0 0 50px #ffffff;
+            background-size: cover;
+        }
+
+        /* 设置.left和.right元素的顶部偏移量为0，宽度为60px，背面不可见 */
+        .right,
+        .left {
+            top: 0;
+            width: 60px;
+            backface-visibility: hidden;
+        }
+
+        /* 设置.left元素的左侧偏移量为0，左边框宽度为5px，3D变换为向右平移1px，Z轴平移-60px，绕Y轴逆时针旋转90度，变换原点为左侧 */
+        .left {
+            left: 0;
+            border-left-width: 5px;
+            transform: translate3d(1px, 0, -60px) rotateY(-90deg);
+            transform-origin: 0%;
+        }
+
+        /* 设置.right元素的右侧偏移量为0，右边框宽度为5px，3D变换为向左平移1px，Z轴平移-60px，绕Y轴顺时针旋转90度，变换原点为右侧 */
+        .right {
+            right: 0;
+            border-right-width: 5px;
+            transform: translate3d(-1px, 0, -60px) rotateY(90deg);
+            transform-origin: 100%;
+        }
+        /* 在这里定义按钮的样式 */
+        #myButton {
+        padding: 15px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        background-color: transparent; /* 设置透明背景 */
+        color: #fff; /* 文本颜色 */
+        cursor: pointer;
+        outline: none;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        }
+
+        /* 创建按钮的阴影效果 */
+        #myButton::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300%; /* 阴影的宽度 */
+        height: 300%; /* 阴影的高度 */
+        background: rgba(255, 255, 255, 0.1); /* 阴影颜色和透明度 */
+        border-radius: 50%;
+        transition: all 0.4s ease; /* 过渡效果 */
+        z-index: -1;
+        transform: translate(-50%, -50%) scale(0); /* 初始阴影效果 */
+        }
+
+        /* 鼠标悬停时的阴影效果 */
+        #myButton:hover::before {
+        transform: translate(-50%, -50%) scale(2);
+        }
+
+        /* 点击时的阴影效果 */
+        #myButton:active::before {
+        transform: translate(-50%, -50%) scale(0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shell">
+        <div class="shell_body">
+            <div class="button">
+                <div class="prev"><i class="iconfont icon-backward_filled"></i></div>
+                <div class="next"><i class="iconfont icon-forward_filled"></i></div>
+            </div>
+
+            <div class="shell_slider">
+
+                <div class="item">
+                    <div class="frame">
+                        <div class="box front">
+                            <h1>2018</h1>
+                            <!-- <span>-In the year 2018 I reached the age of 17-</span> -->
+                            <!-- <button id="myButton" onclick="to()">点击跳转</button> -->
+                            <span>
+                                <button id="myButton" onclick="to1()">点击跳转</button>
+                            </span>
+                        </div>
+                        <div class="box left"></div>
+                        <div class="box right"> </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="frame">
+                        <div class="box front">
+                            <h1>2019</h1>
+                            <!-- <span>-In the year 2019 I reached the age of 18-</span> -->
+                            <!-- <button id="myButton" onclick="to()">点击跳转</button> -->
+                            <span>
+                                <button id="myButton" onclick="to2()">点击跳转</button>
+                            </span>
+                        </div>
+                        <div class="box left"></div>
+                        <div class="box right"> </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="frame">
+                        <div class="box front">
+                            <h1>2020</h1>
+                            <!-- <span>-In the year 2020 I reached the age of 18-</span> -->
+                            <!-- <button id="myButton" onclick="to()">点击跳转</button> -->
+                            <span>
+                                <button id="myButton" onclick="to3()">点击跳转</button>
+                            </span>
+                        </div>
+                        <div class="box left"></div>
+                        <div class="box right"> </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="frame">
+                        <div class="box front">
+                            <h1>2021</h1>
+                            <!-- <span>-In the year 2021 I reached the age of 19-</span> -->
+                            <span>
+                                <button id="myButton" onclick="to4()">点击跳转</button>
+                            </span>
+                        </div>
+                        <div class="box left"></div>
+                        <div class="box right"> </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="frame">
+                        <div class="box front">
+                            <h1>2022</h1>
+                            <!-- <span>-In the year 2022 I reached the age of 20-</span> -->
+                            <!-- <button id="myButton" onclick="to()">点击跳转</button> -->
+                            <span>
+                                <button id="myButton" onclick="to5()">点击跳转</button>
+                            </span>
+                        </div>
+                        <div class="box left"></div>
+                        <div class="box right"> </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="frame">
+                        <div class="box front">
+                            <h1>2023</h1>
+                            <!-- <span>-In the year 2023 I reached the age of 21-</span> -->
+                            <!-- <button id="myButton" onclick="to()">点击跳转</button> -->
+                            <span>
+                                <button id="myButton" onclick="to6()">点击跳转</button>
+                            </span>
+                            
+                        </div>
+                        <div class="box left"></div>
+                        <div class="box right"> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // 这段JavaScript代码的作用是实现一个图片轮播效果。首先，通过document.getElementsByClassName('item')获取到所有具有item类名的元素，并将它们存储在items变量中。
+    // 然后，通过一个循环遍历每个item元素。在循环中，首先获取当前的item元素，然后通过getElementsByClassName方法获取到该item下的frame、front、left和right元素，并将它们分别存储在frame、frontBox、leftBox和rightBox变量中。
+    // 接下来，通过设置frontBox、leftBox和rightBox的style.backgroundImage属性，将背景图片设置为'url(./img/' + (i + 1).toString().padStart(2, '0') + '.jpg)'，其中(i + 1).toString().padStart(2, '0')表示将循环变量i加1后转换为字符串，并在前面补0，以保证图片的文件名格式正确。
+    // 接着，定义了一个立即执行函数，并在函数内部进行了一些操作。首先，通过document.getElementsByClassName('shell')[0]获取到具有shell类名的元素，并将其存储在shell变量中。然后，通过shell.getElementsByClassName方法获取到该shell元素下的shell_slider、item、prev和next元素，并将它们分别存储在slider、items、prevBtn和nextBtn变量中。
+    // 接下来，定义了一些变量，包括width、height、totalWidth、margin、currIndex、interval和intervalTime。width和height分别表示每个item的宽度和高度，totalWidth表示所有item的总宽度，margin表示item的外边距，currIndex表示当前显示的item的索引，interval表示定时器的ID，intervalTime表示定时器的时间间隔。
+    // 然后，定义了init函数，该函数用于初始化一些操作。在该函数中，首先调用resize函数调整大小，然后调用move函数将显示的item移动到中间位置，接着调用bindEvents函数绑定事件，最后调用timer函数启动定时器。
+    // 接着，定义了resize函数，该函数用于在窗口大小变化时调整大小。在该函数中，首先计算出新的width和height，然后根据计算结果设置slider的宽度，以及每个item的宽度和高度。
+    // 接下来，定义了bindEvents函数，该函数用于绑定事件。在该函数中，首先绑定了窗口大小变化时调用resize函数的事件，然后绑定了点击prev按钮和next按钮时调用prev函数和next函数的事件。
+    // 最后，在立即执行函数的末尾，调用了init函数来初始化页面，并定义了move、timer、prev和next函数。其中，move函数用于移动shell到指定的item，timer函数用于启动定时器，prev函数用于切换到上一个item，next函数用于切换到下一个item。
+
+    // 获取所有的item元素
+    var items = document.getElementsByClassName('item');
+    // 循环遍历每个item
+    for (var i = 0; i < items.length; i++) {
+        // 获取当前item
+        var item = items[i];
+        var frame = item.getElementsByClassName('frame')[0];
+        var frontBox = frame.getElementsByClassName('front')[0];
+        var leftBox = frame.getElementsByClassName('left')[0];
+        var rightBox = frame.getElementsByClassName('right')[0];
+        // 设置背景图片
+        frontBox.style.backgroundImage = 'url(./img/' + (i + 1).toString().padStart(2, '0') + '.jpg)';
+        leftBox.style.backgroundImage = 'url(./img/' + (i + 1).toString().padStart(2, '0') + '.jpg)';
+        rightBox.style.backgroundImage = 'url(./img/' + (i + 1).toString().padStart(2, '0') + '.jpg)';
+    }
+    (function () {
+        "use strict";
+        var shell = document.getElementsByClassName('shell')[0];
+        var slider = shell.getElementsByClassName('shell_slider')[0];
+        var items = shell.getElementsByClassName('item');
+        var prevBtn = shell.getElementsByClassName('prev')[0];
+        var nextBtn = shell.getElementsByClassName('next')[0];
+        // 定义变量
+        var width, height, totalWidth, margin = 20,
+            currIndex = 0,
+            interval, intervalTime = 3000;
+        function init() {
+            // 初始化函数
+            resize();
+            move(Math.floor(items.length / 2));
+            bindEvents();
+            timer();
+        }
+        function resize() {
+            // 窗口大小变化时调整大小
+            width = Math.max(window.innerWidth * .20, 275);
+            height = window.innerHeight * .5;
+            totalWidth = width * items.length;
+            // 设置slider宽度
+            slider.style.width = totalWidth + "px";
+            // 设置每个item的宽度和高度
+            for (var i = 0; i < items.length; i++) {
+                let item = items[i];
+                item.style.width = (width - (margin * 2)) + "px";
+                item.style.height = height + "px";
+            }
+        }
+        function bindEvents() {
+            // 窗口大小变化时调整大小
+            window.onresize = resize;
+            // 点击prev按钮切换item
+            prevBtn.addEventListener('click', () => { prev(); });
+            nextBtn.addEventListener('click', () => { next(); });
+        }
+        init();
+        function move(index) {
+            // 移动shell到指定的item
+            if (index < 1) index = items.length;
+            if (index > items.length) index = 1;
+            currIndex = index;
+            // 遍历所有item
+            for (var i = 0; i < items.length; i++) {
+                let item = items[i],
+                    box = item.getElementsByClassName('frame')[0];
+                if (i == (index - 1)) {
+                    // 当前item添加active类并设置3D效果
+                    item.classList.add('item--active');
+                    box.style.transform = "perspective(1200px)";
+                } else {
+                    // 其他item移除active类并设置3D效果
+                    item.classList.remove('item--active');
+                    box.style.transform = "perspective(1200px) rotateY(" + (i < (index - 1) ? 40 : -40) + "deg)";
+                }
+            }
+            // 移动slider
+            slider.style.transform = "translate3d(" + ((index * -width) + (width / 2) + window.innerWidth / 2) + "px, 0, 0)";
+            // 设置body背景图片
+            var frontBox = items[index - 1].getElementsByClassName('front')[0];
+            document.body.style.backgroundImage = frontBox.style.backgroundImage;
+        }
+        function timer() {
+            // 定时器，自动切换shell
+            clearInterval(interval);
+            interval = setInterval(() => {
+                move(++currIndex);
+            }, intervalTime);
+        }
+        // 切换item
+        function prev() {
+            move(--currIndex);
+            timer();
+        }
+        function next() {
+            move(++currIndex);
+            timer();
+        }
+    })();
+    function to1() {
+        // 在此处添加跳转到另一个页面的代码
+            window.location.href = "http://www.yazs.top";
+        };
+    function to2() {
+    // 在此处添加跳转到另一个页面的代码
+        window.location.href = "https://www.baidu.com";
+    };
+    function to3() {
+    // 在此处添加跳转到另一个页面的代码
+        window.location.href = "http://www.yazs.top";
+    };
+    function to4() {
+    // 在此处添加跳转到另一个页面的代码
+        window.location.href = "http://www.yazs.top";
+    };
+    function to5() {
+    // 在此处添加跳转到另一个页面的代码
+        window.location.href = "http://www.yazs.top";
+    };
+    function to6() {
+    // 在此处添加跳转到另一个页面的代码
+        window.location.href = "C:\Users\Yazs\Desktop\前端开发\birthday\second-page\glowing.html";
+    };
+        
+</script>
+
+</html>

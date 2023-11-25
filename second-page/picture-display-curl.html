@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glowing Corner Hover Effects</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="container">
+      <div class="card" style="--clr: #0f0;">
+        <img src="../front-page/111.jpg" class="card-image">
+      </div>
+      <div class="card" style="--clr: #ff0;">
+        <img src="your_image_url_2" class="card-image">
+      </div>
+  </div>
+  <script>
+    const cards = document.querySelectorAll('.card')
+    cards.forEach(card => {
+      const image = card.querySelector('.card-image');
+
+      card.addEventListener('mousemove', function(e) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty('--x', x + 'px')      
+        card.style.setProperty('--y', y + 'px') 
+
+        // Calculate the percentage of image to show based on distance from center
+        const distance = Math.sqrt((x - rect.width / 2) ** 2 + (y - rect.height / 2) ** 2);
+        const maxDistance = Math.sqrt((rect.width / 2) ** 2 + (rect.height / 2) ** 2);
+        const percentage = (distance / maxDistance) * 100;
+
+        // Clip the image based on the percentage
+        image.style.clipPath = `circle(${percentage}% at ${x}px ${y}px)`;
+      });
+
+      card.addEventListener('mouseleave', function() {
+        // Reset styles when mouse leaves the card
+        card.style.removeProperty('--x');
+        card.style.removeProperty('--y');
+        image.style.clipPath = 'circle(0% at 50% 50%)';
+      });
+    });
+  </script>
+</body>
+</html>
